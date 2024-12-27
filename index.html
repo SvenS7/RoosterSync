@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Rooster Sync</title>
+    <link rel="stylesheet" href="assets/styles/style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Rooster Sync</h1>
+      <p>
+        Een tool die er voor zorgt dat je je rooster makkelijk kunt uitprinten.
+      </p>
+    </header>
+    <main>
+      <form id="calenderForm">
+        <label for="calenderURL">Kalender URL:</label>
+        <input
+          type="url"
+          name="calenderURL"
+          placeholder="https://example.com/calendar.ics"
+        />
+        <label for="calenderName">Kalender naam:</label>
+        <input
+          type="text"
+          name="calenderName"
+          autofill="naam"
+          placeholder="Naam"
+        />
+        <label for="calenderNotes">Notities:</label>
+        <input type="text" name="calenderNotes" placeholder="Notities" />
+        <label for="calenderColor">Kleur:</label>
+        <input type="color" name="calenderColor" value="#cc5800" />
+        <button>Haal kalender op</button>
+      </form>
+    </main>
+  </body>
+</html>

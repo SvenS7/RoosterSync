@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+      .notes-column {
+        background-color: white;
+        min-width: 150px;
+      }
+      .notes-column[contenteditable="true"]:focus {
+        outline: 2px solid #007bff;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <form id="calenderForm">
+        <label for="calenderURL">Kalender URL:</label>
+        <input
+          type="url"
+          name="calenderURL"
+          placeholder="https://example.com/calendar.ics"
+        />
+        <label for="calenderName">Kalender naam:</label>
+        <input
+          type="text"
+          name="calenderName"
+          autofill="naam"
+          placeholder="Naam"
+        />
+        <label for="calenderNotes">Notities:</label>
+        <input type="text" name="calenderNotes" placeholder="Notities" />
+        <label for="calenderColor">Kleur:</label>
+        <input type="color" name="calenderColor" value="#cc5800" />
+        <button type="submit">Haal kalender op</button>
+      </form>
+
+      <table id="scheduleTable">
+        <thead>
+          <tr>
+            <th>Dag</th>
+            <th>Tijd</th>
+            <th>Locatie</th>
+            <th>Wijzigingen</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Data wordt hier dynamisch ingevuld -->
+        </tbody>
+      </table>
+    </main>
+
+    <script>
+      document
+        .getElementById("calenderForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const url = document.querySelector('input[name="calenderURL"]').value;
+
+          const fetchUrl = url.replace("webcal://", "https://");
+
+          try {
+            // Haal ICS data op
+            const response = await fetch(fetchUrl);
+            if (!response.ok) throw new Error("Kon kalender niet ophalen");
+            const icsData = await response.text();
+
+            // Verwerk ICS data
+            const events = parseICS(icsData);
+
+            // Toon events in tabel
+            displayEvents(events);
+          } catch (error) {
+            console.error("Error:", error);
+            alert(
+              "Er ging iets mis bij het ophalen van de kalender: " +
+                error.message
+            );
+          }
+        });
+
+      function parseICS(icsData) {
+        const events = [];
+        const lines = icsData.split("\n");
+        let currentEvent = null;
+
+        for (let line of lines) {
+          line = line.trim();
+
+          if (line === "BEGIN:VEVENT") {
+            currentEvent = {};
+          } else if (line === "END:VEVENT") {
+            if (currentEvent) events.push(currentEvent);
+            currentEvent = null;
+          } else if (currentEvent) {
+            const [key, value] = line.split(":");
+
+            switch (key) {
+              case "DTSTART":
+                // Controleer of de tijd in UTC is en converteer naar lokale tijd
+                currentEvent.date = formatDate(value);
+                currentEvent.time = formatTime(value);
+                break;
+              case "LOCATION":
+                currentEvent.location = value;
+                break;
+            }
+          }
+        }
+
+        return events;
+      }
+
+      function formatDate(dateStr) {
+        // Verwijder de tijdzone indicator 'Z' als die er is
+        dateStr = dateStr.replace("Z", "");
+
+        // Parse de datum als een ISO 8601 string
+        const date = new Date(dateStr);
+        return date.toLocaleDateString("nl-NL", {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        });
+      }
+
+      function formatTime(dateStr) {
+        // Verwijder de tijdzone indicator 'Z' als die er is
+        dateStr = dateStr.replace("Z", "");
+
+        // Parse de tijd als een ISO 8601 string
+        const date = new Date(dateStr);
+        return date.toLocaleTimeString("nl-NL", {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+      }
+
+      function displayEvents(events) {
+        const tbody = document.querySelector("#scheduleTable tbody");
+        tbody.innerHTML = "";
+
+        events.forEach((event) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${event.date}</td>
+            <td>${event.time}</td>
+            <td>${event.location || ""}</td>
+            <td class="notes-column" contenteditable="true"></td>
+        `;
+          tbody.appendChild(row);
+        });
+      }
+    </script>
+  </body>
+</html>
