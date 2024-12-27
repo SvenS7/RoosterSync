@@ -6,6 +6,7 @@
     <meta name="color-scheme" content="light dark" />
     <title>Rooster Sync</title>
     <link rel="stylesheet" href="assets/styles/style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ical.js/1.4.0/ical.min.js"></script>
   </head>
   <body>
     <header>
@@ -35,6 +36,20 @@
         <input type="color" name="calenderColor" value="#cc5800" />
         <button>Haal kalender op</button>
       </form>
+      <table id="ics-table">
+        <thead>
+          <tr>
+            <th>Locatie</th>
+            <th>Starttijd</th>
+            <th>Eindtijd</th>
+            <th>Beschrijving</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Dynamische rijen worden hier toegevoegd -->
+        </tbody>
+      </table>
     </main>
+    <script src="assets/scripts/app.js"></script>
   </body>
 </html>
