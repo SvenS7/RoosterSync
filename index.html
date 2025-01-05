@@ -7,13 +7,34 @@
     <title>Rooster Sync</title>
     <link rel="stylesheet" href="assets/styles/style.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ical.js/1.4.0/ical.min.js"></script>
+    <script src="assets/scripts/colorScheme.js"></script>
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="assets/images/icons/favicon.svg"
+    />
+    <link
+      rel="alternate icon"
+      type="image/png"
+      href="assets/images/icons/favicon.png"
+    />
   </head>
   <body>
+    <!-- Popup/Modal -->
+    <div id="popup" class="popup">
+      <div class="popup-content">
+        <h2>Toestemming vereist</h2>
+        <p>
+          Deze website verwerkt tijdelijk gegevens (zoals uw ICS-URL). Door
+          verder te gaan, gaat u akkoord met onze
+          <a href="privacy.html" target="_blank">privacyverklaring</a>.
+        </p>
+        <button id="accept-btn">Akkoord</button>
+      </div>
+    </div>
     <header>
       <h1>Rooster Sync</h1>
-      <p>
-        Een tool die er voor zorgt dat je je rooster makkelijk kunt uitprinten.
-      </p>
+      <p>Een tool waarmee je eenvoudig je rooster kunt uitprinten.</p>
     </header>
     <main>
       <form id="calenderForm">
@@ -33,23 +54,80 @@
         <label for="calenderNotes">Notities:</label>
         <input type="text" name="calenderNotes" placeholder="Notities" />
         <label for="calenderColor">Kleur:</label>
-        <input type="color" name="calenderColor" value="#cc5800" />
-        <button>Haal kalender op</button>
+        <input
+          type="color"
+          id="colorInput"
+          name="calenderColor"
+          value="#cc5800"
+        />
+        <button id="fetchCalendarButton">Haal kalender op</button>
       </form>
       <table id="ics-table">
+        <caption>
+          Rooster:
+        </caption>
         <thead>
           <tr>
+            <th>Vak & Uur</th>
             <th>Locatie</th>
-            <th>Starttijd</th>
-            <th>Eindtijd</th>
-            <th>Beschrijving</th>
+            <th>Tijd</th>
+            <th>Wijzegingen</th>
           </tr>
         </thead>
         <tbody>
           <!-- Dynamische rijen worden hier toegevoegd -->
         </tbody>
+        <tfoot>
+          <tr>
+            <td
+              colspan="4"
+              style="
+                padding: 2px 2px 10px;
+                text-align: left;
+                vertical-align: top;
+              "
+            >
+              <br />
+              <span id="calendarNotesText"></span>
+            </td>
+          </tr>
+        </tfoot>
       </table>
+      <button id="printCalenderButton" onclick="printTable()">
+        Print kalender
+      </button>
     </main>
+    <footer class="footer">
+      <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/7.4.47/css/materialdesignicons.min.css"
+      />
+
+      <div class="footer-content">
+        <p>&copy; 2024 Sven Scheepstra. Alle rechten voorbehouden. V0.1.0</p>
+        <p>
+          <a href="https://svens7.pages.dev" target="_blank">
+            <i class="mdi mdi-web"></i>
+            Website
+          </a>
+          |
+          <a href="https://github.com/SvenS7/RoosterSync" target="_blank">
+            <i class="mdi mdi-github"></i>
+            GitHub
+          </a>
+        </p>
+        <p class="credits">
+          <a href="https://pictogrammers.com/" target="_blank"
+            >Icons door Material Design Icons (MDI)</a
+          >
+          <a
+            href="https://github.com/Templarian/MaterialDesign/blob/master/LICENSE"
+            target="_blank"
+            >Licentie: Apache 2.0</a
+          >
+        </p>
+      </div>
+    </footer>
     <script src="assets/scripts/app.js"></script>
   </body>
 </html>

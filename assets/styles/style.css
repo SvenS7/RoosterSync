@@ -20,6 +20,25 @@
   }
 }
 
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #ics-table,
+  #ics-table * {
+    visibility: visible;
+  }
+  #ics-table {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}
+
+:root {
+  --table-border-color: var(--primary); /* Standaardkleur voor de tabelrand */
+}
+
 * {
   box-sizing: border-box;
 }
@@ -28,18 +47,23 @@ body {
   font-family: Arial, sans-serif;
   background-color: var(--background);
   color: var(--text);
+  margin: 0px;
+  min-height: 100vh;
 }
 
 header {
   display: block;
   text-align: center;
-  margin: 2rem 0;
+  margin: clamp(16px, 2vw, 32px) 0;
 }
 
 main {
-  display: flex;
-  justify-content: center;
+  display: grid;
+  justify-items: center;
   width: auto;
+  columns: 1fr;
+  gap: clamp(16px, 2vw, 64px);
+  margin: clamp(16px, 2vw, 32px);
 }
 
 #calenderForm {
@@ -73,7 +97,9 @@ main {
 }
 
 /* Deze stijl is voor knoppen binnen het element met ID 'calenderForm' */
-#calenderForm button {
+#calenderForm button,
+#accept-btn {
+  cursor: pointer;
   background-color: var(--primary);
   align-self: center;
   width: 100%;
@@ -83,7 +109,20 @@ main {
   transition: background-color 300ms, transform 300ms ease-in-out;
 }
 
-#calenderForm button:hover {
+#printCalenderButton {
+  cursor: pointer;
+  background-color: var(--primary);
+  align-self: center;
+  width: clamp(200px, 80vw, 400px);
+  height: 2rem;
+  border-radius: 8px;
+  border: none;
+  transition: background-color 300ms, transform 300ms ease-in-out;
+}
+
+#calenderForm button:hover,
+#printCalenderButton:hover,
+#accept-btn:hover {
   background-color: var(--secondary);
   transform: translateY(-2px);
 }
@@ -115,4 +154,99 @@ input[type="color"]::-moz-color-swatch {
   border: none;
   border-radius: 4px;
   width: 100%;
+}
+
+#ics-table,
+#ics-table th,
+#ics-table td {
+  border: 2px solid var(--table-border-color);
+}
+
+#ics-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.footer {
+  color: var(--text);
+  padding: 20px 0;
+  text-align: center;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.footer a {
+  color: var(--text);
+  text-decoration: none;
+  margin: 0 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+.footer i {
+  font-size: 20px;
+}
+
+.footer .credits {
+  font-size: 12px;
+  margin-top: 10px;
+  color: var(--text);
+}
+
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(3px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-content {
+  background-color: var(--background);
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 80%;
+  max-width: 400px;
+}
+
+.popup-content h2 {
+  margin-top: 0;
+}
+
+.popup-content p {
+  font-size: 1rem;
+  margin: 1rem 0;
+}
+
+.popup-content a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.popup-content a:hover {
+  text-decoration: underline;
+}
+
+.hidden {
+  display: none;
 }
