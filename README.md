@@ -1,4 +1,5 @@
 # RoosterSync
+https://roostersync.pages.dev
 
 Een tool die er voor zorgt dat jij je rooster kunt uitprinten.
 
